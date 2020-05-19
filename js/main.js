@@ -99,24 +99,25 @@ function update (data) {
         .attr('height', 0)
         .remove()
     
-    // UPDATE old elements present in new data
-    rects.transition(t)
-        .attr('y', d => y(d[value]))
-        .attr('x', d => x(d.month))
-        .attr('height', d => height - y(d[value]))
-        .attr('width', x.bandwidth)
+    
+    
+        
 
     // ENTER new elements present in new data
     rects.enter()
         .append('rect')
-            .attr('x', d => x(d.month))
-            .attr('width', x.bandwidth())            
             .attr('fill', 'steelblue')
             .attr('y', y(0))
             .attr('height', 0)
-        .transition(t)            
-            .attr('y', d => y(d[value]))
-            .attr('height', d => height -y(d[value]))
+            .attr('x', d => x(d.month))
+            .attr('width', x.bandwidth())
+            // UPDATE old elements present in new data
+            .merge(rects)
+            .transition(t)
+                .attr('x', d => x(d.month))
+                .attr('width', x.bandwidth)
+                .attr('y', d => y(d[value]))
+                .attr('height', d => height - y(d[value]))
 
     var label = flag ? 'Revenue' : 'Profit'
     yLabel.text(label)
